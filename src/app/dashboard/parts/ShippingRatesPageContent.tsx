@@ -1,14 +1,20 @@
 'use client';
 import { Box, Breadcrumbs, Button, Cell, Layout, Loader, Page } from '@wix/design-system'; 
 import { useSDK } from '@/app/utils/wix-sdk.client-only'; 
-import { useCallback, useEffect, useState } from 'react'; 
+import { Suspense, useCallback, useEffect, useState } from 'react'; 
 import { ShippingDeliveryMethodForm } from '@/app/dashboard/parts/ShippingDeliveryMethodForm'; 
 import { WixPageId } from '@/app/utils/navigation.const'; 
 import { useSetShippingAppData, useShippingAppData } from '@/app/client-hooks/app-data'; 
 import { ShippingAppData, ShippingCosts, ShippingUnitOfMeasure } from '@/app/types/app-data.model';
 
-export const ShippingRatesPageContent = ({}: {}) => {
-  
+interface CustomHeaderProps {
+  title: string;
+  subtitle: string;
+  actionsBar: React.ReactNode;
+  breadcrumbs: React.ReactNode;
+}
+
+export const ShippingRatesPageContent = ({}: Record<string, never>) => {
   const {
     dashboard: { showToast, navigate },
   } = useSDK(); 
@@ -82,10 +88,19 @@ export const ShippingRatesPageContent = ({}: {}) => {
     ),
     [loading, onSave, persistedShippingAppData],
   );
+  const CustomHeader = (props: CustomHeaderProps) => (
+    <div className="custom-header">
+      <div className="breadcrumbs">{props.breadcrumbs}</div>
+      <h1>{props.title}</h1>
+      <p>{props.subtitle}</p>
+      <div className="actions-bar">{props.actionsBar}</div>
+    </div>
+  );
   
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <Page height='100vh'>
-      <Page.Header
+      <CustomHeader
         actionsBar={<ButtonsBar />} 
         breadcrumbs={ 
           <Breadcrumbs
@@ -140,5 +155,6 @@ export const ShippingRatesPageContent = ({}: {}) => {
         </Layout>
       </Page.Content>
     </Page>
+    </Suspense>
   );
 };

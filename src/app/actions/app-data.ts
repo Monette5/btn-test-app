@@ -49,7 +49,9 @@ const getDatabaseKey = async (appIdentifier: AppIdentifier) => {
       throw new Error('app-data:appIdentifier - instanceId or accessToken is required');
     }
     const appInstance = await parseAccessToken(appIdentifier.accessToken!);
-    instanceId = appInstance.instance?.instanceId;
+    if (typeof appInstance === 'object' && appInstance !== null && 'instance' in appInstance) {
+      instanceId = (appInstance as { instance?: { instanceId?: string } }).instance?.instanceId;
+    }
   }
   return `shipping-app-data:${instanceId}`;
 };

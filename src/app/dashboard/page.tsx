@@ -1,5 +1,11 @@
-import { ShippingRatesPage } from '@/app/dashboard/parts/ShippingRatesPage';
+'use client';
 
-export default async function App() {
-  return <ShippingRatesPage />;
+import DashboardMain from '@/app/dashboard/parts/DashboardMain';
+
+export default function DashboardPage() {
+  return (
+    <div>
+      <DashboardMain />
+    </div>
+  );
 }

@@ -3,7 +3,7 @@ import { calculatePrice } from '@/app/utils/shipping-calculator';
 import { wixAppClient } from '@/app/utils/wix-sdk.app';
 
 wixAppClient.shippingRates.provideHandlers({
-  async getShippingRates({ request, metadata }: { request: any; metadata: { instanceId: string; currency: string } }) {
+  async getShippingRates({ request, metadata }) {
     const appData = await getShippingAppData({ instanceId: metadata.instanceId! });
 
     const currency = metadata.currency;
